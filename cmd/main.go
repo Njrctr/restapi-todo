@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	todo "github.com/Njrctr/restapi-todo"
@@ -10,15 +9,16 @@ import (
 	"github.com/Njrctr/restapi-todo/pkg/repository"
 	"github.com/Njrctr/restapi-todo/pkg/service"
 	"github.com/joho/godotenv"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
 func main() {
 	if err := initConfig(); err != nil {
-		log.Fatalf("Ошибка инициализации конфига: %s", err.Error())
+		logrus.Fatalf("Ошибка инициализации конфига: %s", err.Error())
 	}
 	if err := godotenv.Load(); err != nil {
-		log.Fatalf("Ошибка получения переменных окружения: %s", err.Error())
+		logrus.Fatalf("Ошибка получения переменных окружения: %s", err.Error())
 	}
 	db, err := repository.NewPostgresDB(repository.Config{
 		Host:     viper.GetString("db.host"),
@@ -29,15 +29,15 @@ func main() {
 		Password: os.Getenv("DB_PASSWORD"),
 	})
 	if err != nil {
-		log.Fatalf("Ошибка инициализации Базы данных: %s", err.Error())
+		logrus.Fatalf("Ошибка инициализации Базы данных: %s", err.Error())
 	}
 	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
 	server := new(todo.Server)
-	log.Printf("Попытка запуска сервера на порту %s", viper.GetString("port"))
+	logrus.Printf("Попытка запуска сервера на порту %s", viper.GetString("port"))
 	if err := server.Run(viper.GetString("port"), handlers.InitRouters()); err != nil {
-		log.Fatalf("Error occured while running http server: %s", err.Error())
+		logrus.Fatalf("Error occured while running http server: %s", err.Error())
 	}
 	fmt.Println(server)
 }
