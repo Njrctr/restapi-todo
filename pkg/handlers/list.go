@@ -58,9 +58,9 @@ func (h *Handler) getListById(c *gin.Context) {
 		return
 	}
 
-	listId, err := strconv.Atoi(c.Param("id"))
+	listId, err := strconv.Atoi(c.Param("list_id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "Invalid id param")
+		newErrorResponse(c, http.StatusBadRequest, "Invalid list_id param")
 		return
 	}
 
@@ -79,9 +79,9 @@ func (h *Handler) updateList(c *gin.Context) {
 		return
 	}
 
-	listId, err := strconv.Atoi(c.Param("id"))
+	listId, err := strconv.Atoi(c.Param("list_id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "Invalid id param")
+		newErrorResponse(c, http.StatusBadRequest, "Invalid list_id param")
 		return
 	}
 
@@ -91,7 +91,7 @@ func (h *Handler) updateList(c *gin.Context) {
 		return
 	}
 
-	if err := h.services.Update(userId, listId, input); err != nil {
+	if err := h.services.TodoList.Update(userId, listId, input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -105,9 +105,9 @@ func (h *Handler) deleteList(c *gin.Context) {
 		return
 	}
 
-	listId, err := strconv.Atoi(c.Param("id"))
+	listId, err := strconv.Atoi(c.Param("list_id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "Invalid id param")
+		newErrorResponse(c, http.StatusBadRequest, "Invalid list_id param")
 		return
 	}
 
