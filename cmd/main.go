@@ -16,6 +16,17 @@ import (
 	"github.com/spf13/viper"
 )
 
+// @title Todo App API
+// @version 1.0
+// @description API Server for TodoApp Application
+
+// @host localhost:8080
+// @BasePath /
+
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+
 func main() {
 	if err := initConfig(); err != nil {
 		logrus.Fatalf("Ошибка инициализации конфига: %s", err.Error())
