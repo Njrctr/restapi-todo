@@ -1,8 +1,10 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"os"
+	"os/signal"
+	"syscall"
 
 	todo "github.com/Njrctr/restapi-todo"
 	handler "github.com/Njrctr/restapi-todo/pkg/handlers"
@@ -36,10 +38,24 @@ func main() {
 	handlers := handler.NewHandler(services)
 	server := new(todo.Server)
 	logrus.Printf("Попытка запуска сервера на порту %s", viper.GetString("port"))
-	if err := server.Run(viper.GetString("port"), handlers.InitRouters()); err != nil {
-		logrus.Fatalf("Error occured while running http server: %s", err.Error())
+
+	go func() {
+		if err := server.Run(viper.GetString("port"), handlers.InitRouters()); err != nil {
+			logrus.Fatalf("Error occured while running http server: %s", err.Error())
+		}
+	}()
+	logrus.Print("TODO App Started")
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+	<-quit
+	logrus.Print("TODO App Stoped")
+	if err := server.Shutdown(context.Background()); err != nil {
+		logrus.Errorf("error ocured on server shutting down: %s", err.Error())
 	}
-	fmt.Println(server)
+	if err := db.Close(); err != nil {
+		logrus.Errorf("error ocured on db connection close: %s", err.Error())
+	}
 }
 
 func initConfig() error {
