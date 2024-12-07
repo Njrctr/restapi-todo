@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -40,7 +41,7 @@ func main() {
 	logrus.Printf("Попытка запуска сервера на порту %s", viper.GetString("port"))
 
 	go func() {
-		if err := server.Run(viper.GetString("port"), handlers.InitRouters()); err != nil {
+		if err := server.Run(viper.GetString("port"), handlers.InitRouters()); err != nil && err != http.ErrServerClosed {
 			logrus.Fatalf("Error occured while running http server: %s", err.Error())
 		}
 	}()
@@ -51,10 +52,10 @@ func main() {
 	<-quit
 	logrus.Print("TODO App Stoped")
 	if err := server.Shutdown(context.Background()); err != nil {
-		logrus.Errorf("error ocured on server shutting down: %s", err.Error())
+		logrus.Errorf("error occured on server shutting down: %s", err.Error())
 	}
 	if err := db.Close(); err != nil {
-		logrus.Errorf("error ocured on db connection close: %s", err.Error())
+		logrus.Errorf("error occured on db connection close: %s", err.Error())
 	}
 }
 
