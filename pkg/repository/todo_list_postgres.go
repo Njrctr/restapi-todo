@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	todo "github.com/Njrctr/restapi-todo"
+	todo "github.com/Njrctr/restapi-todo/models"
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
 )

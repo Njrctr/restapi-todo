@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	todo "github.com/Njrctr/restapi-todo"
+	todo "github.com/Njrctr/restapi-todo/models"
 	"github.com/gin-gonic/gin"
 )
 

@@ -1,7 +1,7 @@
 package service
 
 import (
-	todo "github.com/Njrctr/restapi-todo"
+	todo "github.com/Njrctr/restapi-todo/models"
 	"github.com/Njrctr/restapi-todo/pkg/repository"
 )
 

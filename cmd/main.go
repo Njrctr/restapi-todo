@@ -7,7 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	todo "github.com/Njrctr/restapi-todo"
+	todo "github.com/Njrctr/restapi-todo/models"
 	handler "github.com/Njrctr/restapi-todo/pkg/handlers"
 	"github.com/Njrctr/restapi-todo/pkg/repository"
 	"github.com/Njrctr/restapi-todo/pkg/service"

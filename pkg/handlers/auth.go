@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	todo "github.com/Njrctr/restapi-todo"
+	todo "github.com/Njrctr/restapi-todo/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,7 +23,7 @@ func (h *Handler) signUp(c *gin.Context) {
 	var input todo.User
 
 	if err := c.BindJSON(&input); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
 		return
 	}
 
