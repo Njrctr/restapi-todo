@@ -42,6 +42,15 @@ definitions:
     required:
     - title
     type: object
+  todo.TodoItemCreateUpdate:
+    properties:
+      description:
+        type: string
+      done:
+        type: boolean
+      title:
+        type: string
+    type: object
   todo.TodoList:
     properties:
       description:
@@ -52,6 +61,13 @@ definitions:
         type: string
     required:
     - title
+    type: object
+  todo.TodoListCreateUpdate:
+    properties:
+      description:
+        type: string
+      title:
+        type: string
     type: object
   todo.User:
     properties:
@@ -74,6 +90,45 @@ info:
   version: "1.0"
 paths:
   /api/items/{item_id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete item
+      operationId: delete-item
+      parameters:
+      - description: Item Id
+        in: path
+        name: item_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Item
+      tags:
+      - items
     get:
       consumes:
       - application/json
@@ -111,6 +166,51 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get Item By Id
+      tags:
+      - items
+    put:
+      consumes:
+      - application/json
+      description: update todo item
+      operationId: update-item
+      parameters:
+      - description: Item Id
+        in: path
+        name: item_id
+        required: true
+        type: integer
+      - description: item info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/todo.TodoItemCreateUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update todo item
       tags:
       - items
   /api/lists:
@@ -158,7 +258,7 @@ paths:
         name: input
         required: true
         schema:
-          $ref: '#/definitions/todo.TodoList'
+          $ref: '#/definitions/todo.TodoListCreateUpdate'
       produces:
       - application/json
       responses:
@@ -188,6 +288,45 @@ paths:
       tags:
       - lists
   /api/lists/{list_id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete list
+      operationId: delete-list
+      parameters:
+      - description: List Id
+        in: path
+        name: list_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete List
+      tags:
+      - lists
     get:
       consumes:
       - application/json
@@ -225,6 +364,51 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get List By Id
+      tags:
+      - lists
+    put:
+      consumes:
+      - application/json
+      description: update todo list
+      operationId: update-list
+      parameters:
+      - description: List Id
+        in: path
+        name: list_id
+        required: true
+        type: integer
+      - description: list info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/todo.TodoListCreateUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update todo List
       tags:
       - lists
   /api/lists/{list_id}/items:
@@ -274,17 +458,16 @@ paths:
       operationId: create-item
       parameters:
       - description: List Id
-        in: body
+        in: path
         name: list_id
         required: true
-        schema:
-          type: integer
+        type: integer
       - description: item info
         in: body
         name: input
         required: true
         schema:
-          $ref: '#/definitions/todo.TodoItem'
+          $ref: '#/definitions/todo.TodoItemCreateUpdate'
       produces:
       - application/json
       responses:

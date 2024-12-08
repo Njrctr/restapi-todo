@@ -13,7 +13,7 @@ func NewTodoListService(repo repository.TodoList) *TodoListService {
 	return &TodoListService{repo: repo}
 }
 
-func (s *TodoListService) Create(userId int, list todo.TodoList) (int, error) {
+func (s *TodoListService) Create(userId int, list todo.TodoListCreateUpdate) (int, error) {
 	return s.repo.Create(userId, list)
 }
 
