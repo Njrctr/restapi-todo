@@ -53,3 +53,14 @@ func (i UpdateItemInput) Validate() error {
 	}
 	return nil
 }
+
+type TodoListCreateUpdate struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+}
+
+type TodoItemCreateUpdate struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Done        bool   `json:"done"`
+}
