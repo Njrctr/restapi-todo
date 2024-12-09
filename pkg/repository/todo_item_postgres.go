@@ -2,7 +2,6 @@ package repository
 
 import (
 	"fmt"
-	"log"
 	"strings"
 
 	todo "github.com/Njrctr/restapi-todo/models"
@@ -45,7 +44,7 @@ func (r *TodoItemPostgres) Create(listId int, item todo.TodoItem) (int, error) {
 func (r *TodoItemPostgres) GetAll(userId, listId int) ([]todo.TodoItem, error) {
 	var items []todo.TodoItem
 	query := fmt.Sprintf("SELECT ti.id, ti.title, ti.description FROM %s ti INNER JOIN %s li on li.item_id=ti.id INNER JOIN %s ul on ul.list_id=li.list_id WHERE li.list_id=$1 AND ul.user_id=$2", todoItemsTable, listsItemsTable, usersListsTable)
-	log.Println(query)
+
 	if err := r.db.Select(&items, query, listId, userId); err != nil {
 		return nil, err
 	}
