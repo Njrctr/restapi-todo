@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+    todo-backend:
+        build: ./
+        # command: ./wait-for-postgres.sh database migrate -path ./schema -database 'postgres://postgres:qwerty@database:5436/postgres?sslmode=disable' up && ./restapi-todo
+        command: ./wait-for-postgres.sh database ./restapi-todo
+        ports:
+            - 8080:8080
+        depends_on:
+            - database
+        environment:
+            - DB_PASSWORD=qwerty
+
+
+    database:
+        restart: unless-stopped
+        image: postgres:latest
+        # volumes:
+        # - ./.database/postgres/data:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_PASSWORD=qwerty
+        ports:
+            - 5436:5432

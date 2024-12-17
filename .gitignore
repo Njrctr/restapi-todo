@@ -2,3 +2,6 @@
 .idea
 README.MD
 .dockerignore
+.database
+__pycache__
+.venv
